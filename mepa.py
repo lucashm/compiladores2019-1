@@ -87,37 +87,37 @@ def startMEPA():
         elif commands[i][0] == "NEGA":  # Nega o último valor de stack / M
             stack[s] = 1 - stack[s]
         elif commands[i][0] == "CONJ":
-            if stack[s - 1] == 1 and stack[s] == 1:
+            if stack[s - 1] == 1 and int(stack[s]) == 1:
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "DISJ":
-            if stack[s - 1] == 1 or stack[s] == 1:
+            if stack[s - 1] == 1 or int(stack[s]) == 1:
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMME":
-            if stack[s - 1] < stack[s]:
+            if stack[s - 1] < int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMMA":
-            if stack[s - 1] > stack[s]:
+            if stack[s - 1] > int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMIG":
-            if stack[s - 1] == stack[s]:
+            if stack[s - 1] == int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMDG":
-            if stack[s - 1] != stack[s]:
+            if stack[s - 1] != int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
