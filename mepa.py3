@@ -11,16 +11,15 @@ registers = []  # vetor de registradores -> D
 
 labels = {}
 
-
+# Lê as linhas e guarda em -> commands
 for line in read:
     commands.append(line.lstrip().replace(",", "").rstrip().split(" "))
 # print(commands)
 
-
+# Função de auxílio
 def index_exists(ls, i):
     return (0 <= i < len(ls)) or (-len(ls) <= i < 0)
-
-
+# Função de auxílio
 def appendValue(value):
     global s
     if index_exists(stack, s):
@@ -29,6 +28,7 @@ def appendValue(value):
         stack.append(value)
 
 
+# Começa aqui
 def startMEPA():
     global commands
     global stack
@@ -37,13 +37,35 @@ def startMEPA():
 
     global labels
 
-    # Defining labels
+    # Define as labels antes de iniciar o código
     for idx, command in enumerate(commands):
-        if ":" in command[0]:  # Cria labels
+        if ":" in command[0]:
             label = command[0].strip(":")
             labels[label] = idx
 
+    # A estrutura de commands é uma lista
+    # Cada elemento dessa lista também é uma lista de 1 a 3 valores
+    # No caso de INPP, por exemplo, temos ['INPP'] -> Apenas um elemento
+    # Para CRCT, temos ['CRCT', 2], então, para acessar, temos:
+    # commands[i][0] -> 'CRCT' // Nome do comando
+    # commands[i][1] -> 2 // Primeiro argumento
+    #
+    # E o mesmo se repete para 3 valores, exemplo: ['CRVL', 0, 1]
+    # commands[i][0] -> 'CRVL'
+    # commands[i][1] -> 0
+    # commands[i][2] -> 1
+
+
+    #LINK DA DESCRIÇÃO MEPA:
+    # http://www.ic.unicamp.br/~tomasz/ilp/ilp.pdf
+    # página 181
+
     while commands[i][0] != "PARA":
+        # print("======================")
+        # print(s)
+        # print(stack)
+        # print("======================")
+
         if commands[i][0] == "INPP":  # Inicia
             s = -1
             registers.append(0)
@@ -70,37 +92,37 @@ def startMEPA():
         elif commands[i][0] == "NEGA":  # Nega o último valor de stack / M
             stack[s] = 1 - stack[s]
         elif commands[i][0] == "CONJ":
-            if stack[s - 1] == 1 and stack[s] == 1:
+            if stack[s - 1] == 1 and int(stack[s]) == 1:
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "DISJ":
-            if stack[s - 1] == 1 or stack[s] == 1:
+            if stack[s - 1] == 1 or int(stack[s]) == 1:
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMME":
-            if stack[s - 1] < stack[s]:
+            if stack[s - 1] < int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMMA":
-            if stack[s - 1] > stack[s]:
+            if stack[s - 1] > int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMIG":
-            if stack[s - 1] == stack[s]:
+            if stack[s - 1] == int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
             s -= 1
         elif commands[i][0] == "CMDG":
-            if stack[s - 1] != stack[s]:
+            if stack[s - 1] != int(stack[s]):
                 stack[s - 1] = 1
             else:
                 stack[s - 1] = 0
@@ -131,7 +153,7 @@ def startMEPA():
             appendValue(stack[registers[int(commands[i][1])] + int(commands[i][2])])
         elif commands[i][0] == "ARMZ":  # Armazena valor
             stack[registers[int(commands[i][1])] + int(commands[i][2])] = stack[s]
-            s -= s
+            s -= 1
         elif commands[i][0] == "DSVF":  # Desvia se falso
             if stack[s] == 0:
                 if commands[i][1] in labels:

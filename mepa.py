@@ -61,6 +61,11 @@ def startMEPA():
     # página 181
 
     while commands[i][0] != "PARA":
+        # print("======================")
+        # print(s)
+        # print(stack)
+        # print("======================")
+
         if commands[i][0] == "INPP":  # Inicia
             s = -1
             registers.append(0)
@@ -148,7 +153,7 @@ def startMEPA():
             appendValue(stack[registers[int(commands[i][1])] + int(commands[i][2])])
         elif commands[i][0] == "ARMZ":  # Armazena valor
             stack[registers[int(commands[i][1])] + int(commands[i][2])] = stack[s]
-            s -= s
+            s -= 1
         elif commands[i][0] == "DSVF":  # Desvia se falso
             if stack[s] == 0:
                 if commands[i][1] in labels:
