@@ -155,8 +155,8 @@ def startMEPA():
             stack[registers[int(commands[i][1])] + int(commands[i][2])] = stack[s]
             s -= 1
         elif commands[i][0] == "DSVF":  # Desvia se falso
-            if stack[s] == 0:
-                if commands[i][1] in labels:
+            if commands[i][1] in labels:
+                if stack[s] == 0:
                   i = labels[commands[i][1]]
                 else:
                   print("Linha {}: RunTime error. rotulo {} invalido".format(idx, commands[i][1]))

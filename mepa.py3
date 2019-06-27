@@ -146,7 +146,7 @@ def startMEPA():
         elif commands[i][0] == "DMEM":  # Desce o ponteiro de stack / M
             s -= int(commands[i][1])
             if s < 0:
-                print("Linha {}: RunTime error. Stack underflow".format(idx), end = '')
+                print("Linha {}: RunTime error. Stack underflow".format(idx))
                 return
         elif commands[i][0] == "CRVL":  # Carrega valor
             s += 1
@@ -155,20 +155,20 @@ def startMEPA():
             stack[registers[int(commands[i][1])] + int(commands[i][2])] = stack[s]
             s -= 1
         elif commands[i][0] == "DSVF":  # Desvia se falso
-            if stack[s] == 0:
-                if commands[i][1] in labels:
+            if commands[i][1] in labels:
+                if stack[s] == 0:
                   i = labels[commands[i][1]]
-                else:
-                  print("Linha {}: RunTime error. rotulo {} invalido".format(idx, commands[i][1]), end = '')
-                  return
+            else:
+              print("Linha {}: RunTime error rotulo {} invalido".format(idx - 2, commands[i][1]))
+              return
         elif commands[i][0] == "DSVS":
             if commands[i][1] in labels:
               i = labels[commands[i][1]]
             else:
-              print("Linha {}: RunTime error rotulo {} invalido".format(idx, commands[i][1]), end = '')
+              print("Linha {}: RunTime error rotulo {} invalido".format(idx - 2, commands[i][1]))
               return
         elif commands[i][0] == "IMPR":  # Imprime o valor no ponteiro de stack / M
-            print(stack[s], end = '')
+            print(stack[s])
             s -= 1
         elif commands[i][0] == "PARA":  # Encerra
             return
